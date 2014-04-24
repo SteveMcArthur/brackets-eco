@@ -1,7 +1,7 @@
 {
   "name": "brackets-eco",
   "title": "ECO template syntax highlighting",
-  "description": "Provides ECO syntax highlighting by adding the .eco extension to the .ejs highlighter. Early version simply based by telling Brackets to use EJS as the highlighting engine.",
+  "description": "Add syntax highlighting support for the Eco templating language (.eco).",
   "homepage": "https://github.com/SteveMcArthur/brackets-eco",
   "author": "Steve McArthur (http://www.stevemcarthur.co.uk)",
   "license": "MIT",
