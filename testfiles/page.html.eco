@@ -1,0 +1,50 @@
+---
+layout: base
+---
+<div class="content-bar">
+    <div class="row">
+        <div class="large-9 columns left">
+            <div class="widget">
+                <article class="entry-item clearfix">
+                    <div class="entry-content">
+                        <header>
+                            <h1 class="title clearfix"><a href="<%-@document.url%>"><%-@document.title%></a></h1>
+                            <div class="meta-box">
+                                <span class="entry-date"><%-@document.date.toDateString()%></span>
+                            </div>
+                            <div class="clear"></div>
+                        </header>
+                        <%if @document.img:%>
+                            <% cls=if @document.right then "entry-thumb right" else "entry-thumb" %>
+                                <div class="<%=cls%>">
+                                    <img src="<%=@document.img%>" alt="">
+                                </div>
+                                <%end%>
+                                    <%-@document.contentRenderedWithoutLayouts%>
+                    </div>
+
+
+                </article>
+            </div>
+        </div>
+        <div class="large-3 columns right">
+            <header>
+                <h3 class="title clearfix">Latest Articles</h3>
+            </header>
+            <div class="widget">
+                <%for val, i in @getCollection( 'posts').toJSON().slice(2,5):%>
+                    <p class="entry-title">
+                        <a href="<%=val.url%>">
+                            <%-val.title%>
+                        </a>
+                    </p>
+                    <div class="meta-box">
+                        <span class="entry-date"><%-val.date.toDateString()%></span>
+                    </div>
+
+                    <%end%>
+
+            </div>
+        </div>
+    </div>
+</div>
