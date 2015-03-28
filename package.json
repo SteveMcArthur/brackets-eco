@@ -6,11 +6,11 @@
   "author": "Steve McArthur (http://www.stevemcarthur.co.uk)",
   "license": "MIT",
   "engines": {
-    "brackets": ">=0.24.0"
+    "brackets": ">=1.2.0"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:SteveMcArthur/brackets-eco.git"
   },
-  "version": "0.0.2"
+  "version": "1.0.0"
 }

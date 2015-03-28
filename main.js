@@ -1,7 +1,11 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global define, brackets */
 
-/** Simple extension that tells brackets how to recognise eco templates and treat them the same as ejs templates*/
+/*
+ * Brackets ECO template syntax highlighter.
+ * © 2015, Steve McArthur, MIT License
+ * https://github.com/SteveMcArthur/brackets-eco
+ */
 define(function (require, exports, module) {
     "use strict";
 
@@ -17,15 +21,4 @@ define(function (require, exports, module) {
         fileExtensions: ["eco","html.eco"]
     });
 
-
-    var language = LanguageManager.getLanguage("coffeescript2");
-
-    console.log("lang= "+language.getName());
-
-//    var language = LanguageManager.getLanguage("ejs");
-//
-//    language.addFileExtension("eco");
-//    language.addFileName("ECO");
-//    language.setLineCommentSyntax("<%#", "%>");
-//    language.setBlockCommentSyntax("<%##", "%>");
 });
