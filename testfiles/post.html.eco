@@ -1,0 +1,75 @@
+---
+layout: base
+---
+<div class="content-bar">
+    <div class="row">
+        <div class="large-9 columns left">
+            <div class="widget">
+                <article class="entry-item clearfix">
+                    <div class="entry-content">
+                        <header>
+                            <h1 class="title clearfix"><a href="<%-@document.url%>"><%-@document.title%></a></h1>
+                            <div class="meta-box">
+                                <span class="entry-date"><%-@document.date.toDateString()%></span>&nbsp;&nbsp;
+                                <span class="entry-author">By <%-@document.author or "Cyberman"%></span>
+                            </div>
+                            <div class="share-this">
+                                <span class='st_facebook_hcount' displayText='Facebook'></span>
+                                <span class='st_twitter_hcount' displayText='Tweet'></span>
+                                <span class='st_googleplus_hcount' displayText='Google +'></span>
+                                <span class='st_reddit_hcount' displayText='Reddit'></span>
+                                <span class='st_pinterest_hcount' displayText='Pinterest'></span>
+                                <span class='st_email_hcount' displayText='Email'></span>
+                            </div>
+                            <div class="clear"></div>
+                        </header>
+                        <%if @document.img:%>
+                            <% cls=if @document.right then "entry-thumb right" else "entry-thumb" %>
+                                <div class="<%=cls%>">
+                                    <img src="<%=@document.img%>" alt="">
+                                </div>
+                                <%end%>
+                                    <%-@document.contentRenderedWithoutLayouts%>
+                    </div>
+                    <div id="disqus_thread"></div>
+                    <script type="text/javascript">
+                        var disqus_shortname = 'cyberteur'; // required: replace example with your forum shortname
+                        var disqus_identifier = '<%=@document.slug%>';
+                        var disqus_title = '<%=@document.title%>';
+                        var disqus_url = 'http://www.cyberteur.com<%=@document.url%>';
+                        (function () {
+                            var dsq = document.createElement('script');
+                            dsq.type = 'text/javascript';
+                            dsq.async = true;
+                            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                        })();
+                    </script>
+                    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+                    </noscript>
+
+
+                </article>
+            </div>
+        </div>
+        <div class="large-3 columns right">
+            <header>
+                <h3 class="title clearfix">Latest Articles</h3>
+            </header>
+            <div class="widget">
+                <%for val, i in @getCollection( 'posts').toJSON().slice(2,5):%>
+                    <p class="entry-title">
+                        <a href="<%=val.url%>">
+                            <%-val.title%>
+                        </a>
+                    </p>
+                    <div class="meta-box">
+                        <span class="entry-date"><%-val.date.toDateString()%></span>
+                    </div>
+
+                    <%end%>
+
+            </div>
+        </div>
+    </div>
+</div>
