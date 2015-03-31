@@ -64,7 +64,9 @@ define(function (require, exports, module) {
             }
 
             var ch = stream.peek();
-            var eco = stream.string.indexOf("%>");
+            var len = stream.string.length - stream.pos+1;
+            var eco = stream.string.substr(stream.pos,len).indexOf("%>");
+            eco = eco + stream.pos;
 
             // Handle docco title comment (single line)
             if (stream.match("####")) {

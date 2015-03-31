@@ -1,16 +1,22 @@
 {
-  "name": "brackets-eco",
-  "title": "ECO template syntax highlighting",
-  "description": "Add syntax highlighting support for the Eco templating language (.eco).",
-  "homepage": "https://github.com/SteveMcArthur/brackets-eco",
-  "author": "Steve McArthur (http://www.stevemcarthur.co.uk)",
-  "license": "MIT",
-  "engines": {
-    "brackets": ">=1.2.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:SteveMcArthur/brackets-eco.git"
-  },
-  "version": "1.0.0"
+    "name": "brackets-eco",
+    "title": "ECO template syntax highlighting",
+    "description": "Add syntax highlighting support for the Eco templating language (.eco).",
+    "homepage": "https://github.com/SteveMcArthur/brackets-eco",
+    "author": "Steve McArthur (http://www.stevemcarthur.co.uk)",
+    "license": "MIT",
+    "keywords": [
+        "eco",
+        "coffeescript",
+        "template",
+        "highlighter"
+    ],
+    "engines": {
+        "brackets": ">=1.2.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:SteveMcArthur/brackets-eco.git"
+    },
+    "version": "1.0.1"
 }
