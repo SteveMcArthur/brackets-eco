@@ -5,9 +5,10 @@
  * Link to the project's GitHub page:
  * https://github.com/pickhardt/coffeescript-codemirror-mode
  */
-
+/*global define, brackets*/
 define(function (require, exports, module) {
     console.log("defining coffeescript2");
+    var CodeMirror = brackets.getModule("thirdparty/CodeMirror2/lib/codemirror");
     CodeMirror.defineMode("coffeescript2", function (conf, parserConf) {
         var ERRORCLASS = "error";
 
