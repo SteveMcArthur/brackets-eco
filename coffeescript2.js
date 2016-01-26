@@ -16,10 +16,10 @@ define(function (require, exports, module) {
             return new RegExp("^((" + words.join(")|(") + "))\\b");
         }
 
-        var operators = /^(?:->|=>|\+[+=]?|-[\-=]?|\*[\*=]?|\/[\/=]?|[=!]=|<[><]?=?|>>?=?|%=?|&=?|\|=?|\^=?|\~|!|:|\?|(or|and|\|\||&&|\?)=)/;
-        var delimiters = /^(?:[()\[\]{},`=;]|\.\.?\.?)/;
+        var operators = /^(?:->|=>|\+[+=]?|-[\-=]?|\*[\*=]?|\/[\/=]?|[=!]=|<[><]?=?|>>?=?|%=?|&=?|\|=?|\^=?|\~|!|\?|(or|and|\|\||&&|\?)=)/;
+        var delimiters = /^(?:[()\[\]{},:`=;]|\.\.?\.?)/;
         var identifiers = /^[_A-Za-z$][_A-Za-z$0-9]*/;
-        var properties = /^(@|this\.)[_A-Za-z$][_A-Za-z$0-9]*/;
+        var atProp = /^@[_A-Za-z$][_A-Za-z$0-9]*/;
 
         var wordOperators = wordRegexp(["and", "or", "not",
                                   "is", "isnt", "in",
@@ -28,7 +28,7 @@ define(function (require, exports, module) {
                         "switch", "try", "catch", "finally", "class"];
         var commonKeywords = ["break", "by", "continue", "debugger", "delete",
                         "do", "in", "of", "new", "return", "then",
-                        "this", "@", "throw", "when", "until", "extends","end"];
+                        "this", "@", "throw", "when", "until", "extends", "end"];
 
         var keywords = wordRegexp(indentKeywords.concat(commonKeywords));
 
@@ -65,39 +65,22 @@ define(function (require, exports, module) {
             }
 
             var ch = stream.peek();
-            var len = stream.string.length - stream.pos+1;
-            var eco = stream.string.substr(stream.pos,len).indexOf("%>");
-            eco = eco + stream.pos;
 
             // Handle docco title comment (single line)
             if (stream.match("####")) {
-                if (eco > stream.pos) {
-                    stream.pos = eco;
-                } else {
-                    stream.skipToEnd();
-                }
+                stream.skipToEnd();
                 return "comment";
             }
 
             // Handle multi line comments
             if (stream.match("###")) {
-                //eco doesn't support multiline comments
-                //so just treat them the same as single line comments
-                if (eco > stream.pos) {
-                    stream.pos = eco;
-                } else {
-                    state.tokenize = longComment;
-                    return state.tokenize(stream, state);
-                }
+                state.tokenize = longComment;
+                return state.tokenize(stream, state);
             }
 
             // Single line comment
             if (ch === "#") {
-                if (eco > stream.pos) {
-                    stream.pos = eco;
-                } else {
-                    stream.skipToEnd();
-                }
+                stream.skipToEnd();
                 return "comment";
             }
 
@@ -156,6 +139,8 @@ define(function (require, exports, module) {
                 }
             }
 
+
+
             // Handle operators and delimiters
             if (stream.match(operators) || stream.match(wordOperators)) {
                 return "operator";
@@ -168,16 +153,16 @@ define(function (require, exports, module) {
                 return "atom";
             }
 
+            if (stream.match(atProp) || state.prop && stream.match(identifiers)) {
+                return "property";
+            }
+
             if (stream.match(keywords)) {
                 return "keyword";
             }
 
             if (stream.match(identifiers)) {
                 return "variable";
-            }
-
-            if (stream.match(properties)) {
-                return "property";
             }
 
             // Handle non-detected items
@@ -279,7 +264,7 @@ define(function (require, exports, module) {
             var current = stream.current();
 
             // Handle "." connected identifiers
-            if (current === ".") {
+            if (false && current === ".") {
                 style = state.tokenize(stream, state);
                 current = stream.current();
                 if (/^\.[\w$]+$/.test(current)) {
@@ -293,9 +278,7 @@ define(function (require, exports, module) {
             if (current === "return") {
                 state.dedent = true;
             }
-            if (((current === "->" || current === "=>") &&
-                    !state.lambda &&
-                    !stream.peek()) || style === "indent") {
+            if (((current === "->" || current === "=>") && stream.eol()) || style === "indent") {
                 indent(stream, state);
             }
             var delimiter_index = "[({".indexOf(current);
@@ -341,8 +324,7 @@ define(function (require, exports, module) {
                         prev: null,
                         align: false
                     },
-                    lastToken: null,
-                    lambda: false,
+                    prop: false,
                     dedent: 0
                 };
             },
@@ -352,15 +334,9 @@ define(function (require, exports, module) {
                 if (fillAlign && stream.sol()) fillAlign.align = false;
 
                 var style = tokenLexer(stream, state);
-                if (fillAlign && style && style != "comment") fillAlign.align = true;
-
-                state.lastToken = {
-                    style: style,
-                    content: stream.current()
-                };
-
-                if (stream.eol() && stream.lambda) {
-                    state.lambda = false;
+                if (style && style != "comment") {
+                    if (fillAlign) fillAlign.align = true;
+                    state.prop = style == "punctuation" && stream.current() == "."
                 }
 
                 return style;
@@ -384,7 +360,6 @@ define(function (require, exports, module) {
         };
         return external;
     });
-
     CodeMirror.defineMIME("text/x-coffeescript2", "coffeescript2");
 
     var LanguageManager = brackets.getModule("language/LanguageManager");
